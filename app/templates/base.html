@@ -6,123 +6,22 @@
       {% else %}
       <title>RENS Dashboard</title>
       {% endif %}
-      <style>
-      body {background-color: aliceblue;
-            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-            
-      }
-      
-      a {text-decoration: none;
-         color: darkcyan;
-      }
-      ul {
-        width: 100%;
-      }
-      header {
-        width:100%;
-        margin-top:0;
-        height: auto;
-        background-color: gainsboro;
-      }
-      .flex-container {
-            width:100%;
-            display: flex;
-
-            justify-content: space-evenly;
-      }
-      .header-item {
-        list-style: none;
-        display:inline;
-        padding:1%;
-        justify-content: center;
-      }
-      
-      .error-message {
-        color: red;
-        list-style:none;
-        margin:auto;
-        padding: 1%;
-      }
-      .error-container {
-        width: 70%;
-        background-color: #ffe6e6;
-        border: 3px solid red;
-        margin-bottom: 1%;
-        opacity: 90%;
-      }
-
-      .info-message {
-        color: black;
-        list-style: none;
-        margin:auto;
-        padding:1%;
-      }
-
-      .info-container{
-        width: 70%;
-        background-color: #8ea8c5;
-        border: 3px solid blue;
-        margin-bottom: 1%;
-        opacity: 90%;
-      }
-
-      .box {display:inline-block;}
-
-
-
-
-      .dashboard-container {
-        padding:10px 10px 10px 10px;
-        width:100%;
-        height:100%;
-        display:flex;
-        flex-wrap: wrap;
-        
-      }
-
-      .main-container{
-        
-        margin: 1%;
-        padding:10px;
-        height:auto;
-        min-height:500px;
-        flex-grow:1;
-        min-width:600px;
-      }
-
-      .iframe-container {
-        border-radius: 5px;
-        border-color: darkblue;
-        border-width: 3px;
-        height:90%;
-        width:100%;
-        
-      }
-      .toggle-container {
-        height: 80px;
-        overflow: hidden;
-        position: relative;
-    }
-    
-    .toggle-container p {
-        margin: 0;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-    }
-      </style>
-      {% block scripts %}
-      {% endblock %}
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+      {% block styles %}{% endblock %}
+      {% block scripts %}{% endblock %}
     </head>
     <body>
         <header>
           <div class="flex-container">
           <ul>
-            <li class="header-item"><a href="{{ url_for('main.dashboard') }}">Dashboard Main Page</a></li>
-            <li class="header-item"><a href="{{ url_for('main.index') }}">Exit Dashboard to Home</a></li>
-            {% if not current_user.is_authenticated %}<li class="header-item"><a href="{{ url_for('main.login') }}">Login</a></li>{% else %}
+            <li class="header-item logo"><a href="{{ url_for('main.index') }}"><img src="{{ url_for('static', filename='images/logo.png') }}" alt="Home"></a></li>
+            {% if current_user.is_authenticated %}        
+            <li class="header-item"><a href="{{ url_for('main.index') }}">Public View</a></li>
+            <li class="header-item"><a href="{{ url_for('main.dashboard') }}">Manage Dashboard</a></li>
+            <li class="header-item"><a href="{{ url_for('main.upload') }}">Upload Data</a></li>
             <li class="header-item"><a href="{{ url_for('main.logout') }}">Logout</a></li>
+            {% else %}
+            <li class="header-item"><a href="{{ url_for('main.login') }}">Staff Login</a></li>
             {% endif %}
           </ul>
         </div>
@@ -143,6 +42,6 @@
         {% block content %}{% endblock %}
         </div>
 
-    <footer>RENS in partnership with 180DC Bristol.</footer>
+    <footer>RENS dashboard, developed in partnership with 180DC Bristol.</footer>
     </body>
 </html>

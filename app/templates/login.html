@@ -1,9 +1,13 @@
 {% extends "base.html" %}
 
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+{% endblock %}
+
 {% block content %}
     <main class="wrap">
-        <section class="card" role="main" aria-labelledby="login-title">
-            <h1 id="login-title">Login</h1>
+        <section class="card" role="main" aria-labelledby="form-title">
+            <h1 id="form-title">Login</h1>
             <form method="POST" action="{{ url_for('main.login') }}">
                 {{ form.hidden_tag() }}
                 <div>
