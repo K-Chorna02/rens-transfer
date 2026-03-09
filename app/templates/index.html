@@ -8,20 +8,19 @@
         
 
             <p>Below you can see an example of embedding a few graphs in iframes:</p>
-            <iframe
-                title="Graph A Embedded"
-                src="{{ url_for('graphs.graph_endpoint', graph_id=1) }}"
-                style="border:none; height:300px;"
-                class="box"
-                loading="lazy"
-    ></iframe>
-            <iframe
-                title="Graph B Embedded"
-                src="{{ url_for('graphs.graph_endpoint', graph_id=2) }}"
-                style="border:none; height:300px;"
-                class="box"
-                loading="lazy"
-                ></iframe>
+            {% if graph_list %}
+            {% for graph in graph_list %}
+                <iframe
+                    title="{{ graph.name }}"
+                    src="{{ url_for('graphs.graph_endpoint', graph_id=graph.id) }}"
+                    style="border:none; height:300px;"
+                    class="box"
+                    loading="lazy">
+                </iframe>
+            {% endfor %}
+            {% else %}
+                <p>No public graphs are currently available.</p>
+            {% endif %}
             
         </section>
     </main>
