@@ -72,7 +72,8 @@ def upload():
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    graph_list = Graph.query.filter_by(public=True).all()
+    return render_template('index.html', graph_list=graph_list)
 
 
 @main_bp.route('/login', methods=['GET','POST'])

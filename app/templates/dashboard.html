@@ -1,15 +1,41 @@
 {% extends "base.html" %}
 
 {%block scripts%}
+<style>
+.visibility-badge{
+  padding:6px 14px;
+  border-radius:14px;
+  font-size:0.85rem;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+}
+    .visibility-badge.public {
+    background-color: rgba(49, 183, 188, 0.18);
+    color: var(--brand-teal);
+    }
+
+    .visibility-badge.private {
+    background-color: rgba(2, 10, 10, 0.08);
+    color: rgba(2, 10, 10, 0.65);
+    }
+</style>
+
+
 <script>
     const toggleUrlTemplate = "{{ url_for('graphs.toggle_graph', graph_id='__GRAPHID__', new_visibility='__VIS__') }}";
 </script>
 <script>
-    function copyEmbedLink(graphId) {
-    const linkElement = document.getElementById(`embed-link-${graphId}`);
-    if (!linkElement) return;
 
-    const textToCopy = linkElement.textContent; 
+function copyEmbedLink(graphId, url) {
+    const textToCopy = `<iframe
+    title="Embedded Graph ${graphId}"
+    src="${url}"
+    style="border:none; height:300px;"
+    class="box"
+    loading="lazy">
+    </iframe>`;
+
     navigator.clipboard.writeText(textToCopy)
         .then(() => {
             console.log(`Copied link for graph ${graphId} to clipboard`);
@@ -20,6 +46,19 @@
             console.error("Failed to copy:", err);
         });
 }
+
+
+function copyDirectLink(url) {
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            alert("Direct link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy:", err);
+        });
+}
+
+
     function updateGraphVisibility(graphId,newVisibility) {
         const url = toggleUrlTemplate
     .replace("__GRAPHID__", graphId)
@@ -39,6 +78,13 @@
                         btn.textContent = "Make Public";
                     }
                 }
+                const badge = document.getElementById(`visibility-badge-${graphId}`);
+                if (badge) {
+                badge.textContent = newVisibility === "public" ? "Public" : "Private";
+                badge.classList.remove("public", "private");
+                badge.classList.add(newVisibility);
+                }
+
                 const descriptionPublic = document.getElementById(`public-note${graphId}`)
                 const descriptionPrivate = document.getElementById(`private-note${graphId}`)
                 if (descriptionPublic && descriptionPrivate) {
@@ -67,8 +113,6 @@
     <main class="wrap">
         <section class="card" role="main" aria-labelledby="welcome-title">
             <h1 id="welcome-title">Welcome to your Dashboard</h1>
-            <p>This is the main page of the dashboard.</p>
-            <p>Here begin our data visuals. Notice they are interactive:</p>
 
             <div class="dashboard-container">
                 {% for graph in graph_list %}
@@ -78,18 +122,23 @@
                         class="iframe-container">
                     </iframe>
                     <div class="toggle-container">
-                    
-                    
+
+                        <span 
+                        id="visibility-badge-{{graph.id}}" 
+                        class="visibility-badge {{ 'public' if graph.public else 'private' }}">
+                        {{ 'Public' if graph.public else 'Private' }}
+                        </span>
+                        
                         <p id="public-note{{graph.id}}"
                         {%if not graph.public%}
-                        style="display:none"{%endif%}>The graph above can be embedded in another website. Embed link:<br>
-                        <a href="{{url_for('graphs.graph_endpoint', graph_id=graph.id)}}">{{url_for('graphs.graph_endpoint', graph_id=graph.id,_external=True)}}</a> <button id="embed-link-{{graph.id}}" onclick="copyEmbedLink({{graph.id}})">Copy link</button><button id="make-private-button{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","private")';>Make private</button></p>
-                    
-                    
+                        style="display:none"{%endif%}>
+                        <button onclick="copyEmbedLink({{graph.id}}, '{{ url_for('graphs.graph_endpoint', graph_id=graph.id, _external=True) }}')">Copy embed code</button>                 
+                        <button onclick="copyDirectLink('{{ url_for('graphs.graph_endpoint', graph_id=graph.id, _external=True) }}')">Copy direct link</button>
+                        <button id="make-private-button{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","private")';>Make private</button></p>                  
                         <p id="private-note{{graph.id}}"
                         {%if graph.public%}
                         style="display:none"{%endif%}
-                        >The graph above is private: <button id="makePublicButton{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","public")';>Make public</button></p>
+                        ><button id="makePublicButton{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","public")';>Make public</button></p>
                     
                     </div>
                 </div>
