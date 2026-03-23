@@ -47,25 +47,44 @@ def graph_tester():
 
 
 
-@main_bp.route('/upload', methods=['GET','POST'])
+@main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
 def upload():
     form = UploadForm()
 
     if form.validate_on_submit():
-
         f = form.file_field.data
         filename = secure_filename(f.filename)
         destination_dataset = form.destination.data
-        current_app.logger.info(f"Form validated successfully with {filename} and {destination_dataset}")
-        
-        if not current_app.testing:
-            f.save(os.path.join(os.path.join(os.getcwd(), 'app/uploads', filename)))
-            flash(f'Your file {filename} was uploaded',category='info')
-        flash(f'File {filename} would be saved to {destination_dataset} in a non-testing environment.',category='warning')
-        return redirect(url_for('main.index'))
-    
-    current_app.logger.info(f"choice field {form.destination.data}")
+
+        current_app.logger.info(f"Upload received: {filename} → {destination_dataset}")
+
+        dataset_paths = {
+            'activities':    os.path.join(os.getcwd(), 'app/datasets/processed/Activities_processed.csv'),
+            'organisations': os.path.join(os.getcwd(), 'app/datasets/processed/Organisations_processed.csv'),
+            'meetings':      os.path.join(os.getcwd(), 'app/datasets/processed/Meetings_processed.csv'),
+        }
+
+        destination_path = dataset_paths.get(destination_dataset)
+
+        if not destination_path:
+            flash('Invalid dataset selected.', category='error')
+            return redirect(url_for('main.upload'))
+
+        if os.path.exists(destination_path):
+            os.remove(destination_path)
+            current_app.logger.info(f'Deleted old CSV: {destination_path}')
+
+        f.save(destination_path)
+        current_app.logger.info(f'Saved new CSV to: {destination_path}')
+
+        from app.db_init import regenerate_graphs
+        from app import db
+        regenerate_graphs(db)
+
+        flash('File uploaded and graphs updated successfully.', category='info')
+        return redirect(url_for('main.dashboard'))
+
     return render_template('upload.html', form=form)
 
 
@@ -80,7 +99,7 @@ def login():
     if current_user.is_authenticated:
         flash('You are already logged in!',category='info')
         return redirect(url_for('main.index'))
-    
+
     form = LoginForm()
     if form.validate_on_submit():
         username=form.username.data
@@ -93,12 +112,12 @@ def login():
         if username != admin_username or not check_password_hash(admin_hash,form_password):
             flash('Invalid username or password',category='error')
             return redirect(url_for('main.login'))
-        
+
         login_user(admin_user,remember=form.remember_me.data)
         current_app.logger.info("Logged in admin")
         flash('Logged in successfully.',category='info')
         return redirect(url_for('main.index'))
-    
+
     return render_template('login.html', form=form)
 
 
