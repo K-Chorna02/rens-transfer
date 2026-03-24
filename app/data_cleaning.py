@@ -4,25 +4,57 @@ import os
 #these functions clean the incoming data
 
 def clean_organisations(input_path):
-    filename = os.path.join(input_path,'Organisations.csv')
-    pd.set_option('display.max_columns', None)
-    pd.set_option('display.max_rows', None)
-    pd.set_option('display.width', None)
-    pd.set_option('display.max_colwidth', None)
-    
-    df= pd.read_csv(
+    filename = os.path.join(input_path, 'Organisations.csv')
+
+    df = pd.read_csv(
         filename,
-        dtype=str,                # read everything as text
-        engine='python',          # more tolerant parser
-        on_bad_lines='warn',      # warn instead of failing or skipping
+        dtype=str,
+        engine='python',
+        on_bad_lines='warn',
     )
-    
-    #standardization
-    df["Focus"]=(df["Focus"].str.capitalize())
-    df["Area of Operation"]=(df["Area of Operation"].str.capitalize())
-    df["Area of Operation"]=(df["Area of Operation"].str.strip())
+
+    df.columns = df.columns.str.strip()
+
+    # Strip whitespace in all text columns
+    df = df.apply(lambda x: x.str.strip() if x.dtype == "object" else x)
+
+    # Standardization
+    if "Focus" in df.columns:
+        df["Focus"] = df["Focus"].str.capitalize()
+
+    if "Area of Operation" in df.columns:
+        df["Area of Operation"] = df["Area of Operation"].str.capitalize()
+        df["Area of Operation"] = df["Area of Operation"].str.strip()
+
+    # TtoR as numeric
+    if "TtoR" in df.columns:
+        df["TtoR"] = pd.to_numeric(df["TtoR"], errors="coerce")
+
+    # Variety normalization
+    if "Variety" in df.columns:
+        df["Variety"] = (
+            df["Variety"]
+            .astype("string")
+            .str.strip()
+            .str.upper()
+            .replace({
+                "1": "A",
+                "2": "B",
+                "3": "C"
+            })
+        )
+
+    # Convert priority flags to booleans
+    priority_cols = ["EQ", "RJ", "CU", "CJ", "SO", "SJ", "CE", "SC"]
+    for col in priority_cols:
+        if col in df.columns:
+            s = df[col].astype("string").str.strip().str.upper()
+            df[col] = s.isin({"Y", "YES", "TRUE", "1", "T"})
+
+    # Drop fully empty rows
+    df.dropna(how='all', inplace=True)
+
     return df, 'Organisations_processed.csv'
-    
 def clean_activities(input_path):
     filename = os.path.join(input_path,'Activities.csv')
     df = pd.read_csv(filename)

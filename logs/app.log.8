@@ -1,4 +1,4 @@
-2025-11-24 23:46:24,261 ERROR: Exception on /graph/1 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
+2025-11-24 23:46:24,292 ERROR: Exception on /graph/5 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
 Traceback (most recent call last):
   File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
@@ -26,63 +26,7 @@ Traceback (most recent call last):
     packet_size = min(MAX_PACKET_LEN, len(sql) + 1)  # +1 is for command
                                       ^^^^^^^^
 TypeError: object of type 'Select' has no len()
-2025-11-24 23:46:24,278 ERROR: Exception on /graph/2 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
-Traceback (most recent call last):
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/ossian/rens/app/graphs/routes.py", line 17, in graph_endpoint
-    g = cur.execute(db.select(Graph).filter_by(id=graph_id)).first()
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
-    result = self._query(query)
-             ^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
-    conn.query(q)
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 574, in query
-    self._execute_command(COMMAND.COM_QUERY, sql)
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 859, in _execute_command
-    packet_size = min(MAX_PACKET_LEN, len(sql) + 1)  # +1 is for command
-                                      ^^^^^^^^
-TypeError: object of type 'Select' has no len()
-2025-11-24 23:46:24,282 ERROR: Exception on /graph/7 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
-Traceback (most recent call last):
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
-    response = self.full_dispatch_request()
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
-    rv = self.handle_user_exception(e)
-         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
-    rv = self.dispatch_request()
-         ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
-    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/ossian/rens/app/graphs/routes.py", line 17, in graph_endpoint
-    g = cur.execute(db.select(Graph).filter_by(id=graph_id)).first()
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 153, in execute
-    result = self._query(query)
-             ^^^^^^^^^^^^^^^^^^
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/cursors.py", line 322, in _query
-    conn.query(q)
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 574, in query
-    self._execute_command(COMMAND.COM_QUERY, sql)
-  File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/pymysql/connections.py", line 859, in _execute_command
-    packet_size = min(MAX_PACKET_LEN, len(sql) + 1)  # +1 is for command
-                                      ^^^^^^^^
-TypeError: object of type 'Select' has no len()
-2025-11-24 23:46:24,289 ERROR: Exception on /graph/4 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
+2025-11-24 23:46:56,273 ERROR: Exception on /graph/2 [GET] [in /home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py:838]
 Traceback (most recent call last):
   File "/home/westonloop/virtualenv/ossian/rens/3.11/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
     response = self.full_dispatch_request()
