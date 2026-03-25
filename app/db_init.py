@@ -64,3 +64,25 @@ def empty_db(db:SQLAlchemy):
     db.session.commit()
     print(f"Database cleared.")
 
+def regenerate_graphs(db: SQLAlchemy):
+    """
+    Deletes all graph records from the DB, deletes their HTML files,
+    then regenerates everything from the current processed CSVs.
+    Call this inside a Flask app context after a new CSV has been saved.
+    """
+    # Step 1: delete all existing graph HTML files and DB records
+    graphs = Graph.query.all()
+    for graph in graphs:
+        if os.path.exists(graph.path):
+            os.remove(graph.path)
+            current_app.logger.info(f'Deleted HTML file: {graph.path}')
+        db.session.delete(graph)
+
+    db.session.commit()
+    current_app.logger.info('All graph records cleared from DB.')
+
+    # Step 2: rebuild everything from the current CSVs
+    generator_dict = create_generator_dict()
+    populate_db(generator_dict, db)
+    current_app.logger.info('Graphs regenerated successfully.')
+

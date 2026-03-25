@@ -16,7 +16,11 @@ class UploadForm(FlaskForm):
     destination = SelectField('Select Destination Dataset',validators=[
     DataRequired()
     ],
-    choices=[('dataset1','Dataset 1'),('dataset2','Dataset 2')]
+    choices=[
+    ('activities', 'Activities'),
+    ('organisations', 'Organisations'),
+    ('meetings', 'Meetings'),
+]
     )
     submit = SubmitField('Upload')
     
