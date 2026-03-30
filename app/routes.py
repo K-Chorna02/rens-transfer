@@ -8,6 +8,10 @@ import os
 from flask_login import login_user, logout_user, current_user, login_required
 from jinja2 import TemplateNotFound
 
+import pandas as pd
+from app.data_validation import validate_df
+from app.data_cleaning import clean_df
+
 
 main_bp = Blueprint('main', __name__)
 
@@ -45,7 +49,16 @@ def graph_tester():
 
 
 
+def read_uploaded_file(uploaded_file):
+    filename = uploaded_file.filename.lower()
 
+    if filename.endswith('.csv'):
+        return pd.read_csv(uploaded_file, dtype=str, engine='python', on_bad_lines='warn')
+
+    if filename.endswith('.xlsx'):
+        return pd.read_excel(uploaded_file, dtype=str)
+
+    raise ValueError('Unsupported file type')
 
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -54,73 +67,66 @@ def upload():
 
     if form.validate_on_submit():
         f = form.file_field.data
-        filename = secure_filename(f.filename)
         destination_dataset = form.destination.data
+        safe_filename = secure_filename(f.filename)
 
-        current_app.logger.info(f"Upload received: {filename} → {destination_dataset}")
+        current_app.logger.info(f"Upload received: {safe_filename} -> {destination_dataset}")
 
-        dataset_paths = {
-            'activities':    os.path.join(os.getcwd(), 'app/datasets/processed/Activities_processed.csv'),
-            'organisations': os.path.join(os.getcwd(), 'app/datasets/processed/Organisations_processed.csv'),
-            'meetings':      os.path.join(os.getcwd(), 'app/datasets/processed/Meetings_processed.csv'),
-        }
+        try:
+            raw_paths = {
+                'activities': os.path.join(os.getcwd(), f'app/datasets/raw/Activities_raw{os.path.splitext(safe_filename)[1].lower()}'),
+                'organisations': os.path.join(os.getcwd(), f'app/datasets/raw/Organisations_raw{os.path.splitext(safe_filename)[1].lower()}'),
+                'meetings': os.path.join(os.getcwd(), f'app/datasets/raw/Meetings_raw{os.path.splitext(safe_filename)[1].lower()}'),
+            }
 
-        destination_path = dataset_paths.get(destination_dataset)
+            processed_paths = {
+                'activities': os.path.join(os.getcwd(), 'app/datasets/processed/Activities_processed.csv'),
+                'organisations': os.path.join(os.getcwd(), 'app/datasets/processed/Organisations_processed.csv'),
+                'meetings': os.path.join(os.getcwd(), 'app/datasets/processed/Meetings_processed.csv'),
+            }
 
-        if not destination_path:
-            flash('Invalid dataset selected.', category='error')
-            return redirect(url_for('main.upload'))
+            raw_path = raw_paths.get(destination_dataset)
+            destination_path = processed_paths.get(destination_dataset)
 
-        if os.path.exists(destination_path):
-            os.remove(destination_path)
-            current_app.logger.info(f'Deleted old CSV: {destination_path}')
+            if not raw_path or not destination_path:
+                flash('Invalid dataset selected.', category='error')
+                return redirect(url_for('main.upload'))
 
-        f.save(destination_path)
-        current_app.logger.info(f'Saved new CSV to: {destination_path}')
+            os.makedirs(os.path.dirname(raw_path), exist_ok=True)
+            os.makedirs(os.path.dirname(destination_path), exist_ok=True)
 
-        from app.db_init import regenerate_graphs
-        from app import db
-        regenerate_graphs(db)
+            f.save(raw_path)
+            current_app.logger.info(f'Saved raw upload to: {raw_path}')
 
-        flash('File uploaded and graphs updated successfully.', category='info')
-        return redirect(url_for('main.dashboard'))
+            if raw_path.lower().endswith('.csv'):
+                df = pd.read_csv(raw_path, dtype=str, engine='python', on_bad_lines='warn')
+            elif raw_path.lower().endswith('.xlsx'):
+                df = pd.read_excel(raw_path, dtype=str)
+            else:
+                raise ValueError('Unsupported file type')
+
+            is_valid, errors = validate_df(df, destination_dataset)
+            if not is_valid:
+                form.file_field.errors.append(errors)
+                return render_template('upload.html', form=form)
+
+            cleaned_df = clean_df(df, destination_dataset)
+            cleaned_df.to_csv(destination_path, index=False)
+
+            current_app.logger.info(f'Saved cleaned CSV to: {destination_path}')
+
+            from app.db_init import regenerate_graphs
+            from app import db
+            regenerate_graphs(db)
+
+            flash('File uploaded and graphs updated successfully.', category='info')
+            return redirect(url_for('main.dashboard'))
+
+        except Exception as e:
+            current_app.logger.exception("Upload failed")
+            form.file_field.errors.append(f"Error processing file: {str(e)}")
 
     return render_template('upload.html', form=form)
-
-
-
-@main_bp.route('/')
-def index():
-    graph_list = Graph.query.filter_by(public=True).all()
-    return render_template('index.html', graph_list=graph_list)
-
-
-@main_bp.route('/login', methods=['GET','POST'])
-def login():
-    if current_user.is_authenticated:
-        flash('You are already logged in!',category='info')
-        return redirect(url_for('main.index'))
-
-    form = LoginForm()
-    if form.validate_on_submit():
-        username=form.username.data
-        form_password = form.password.data
-
-        admin_user = current_app.config['ADMIN_USER']
-
-        admin_hash = admin_user.password_hash
-        admin_username = admin_user.username
-        if username != admin_username or not check_password_hash(admin_hash,form_password):
-            flash('Invalid username or password',category='error')
-            return redirect(url_for('main.login'))
-
-        login_user(admin_user,remember=form.remember_me.data)
-        current_app.logger.info("Logged in admin")
-        flash('Logged in successfully.',category='info')
-        return redirect(url_for('main.index'))
-
-    return render_template('login.html', form=form)
-
 
 @main_bp.route('/logout')
 def logout():

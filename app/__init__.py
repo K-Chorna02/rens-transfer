@@ -75,19 +75,39 @@ def create_app(config_class=Config):
     
     @app.cli.command("regenerate-csv")
     def regenerate_csv():
-        """Re-clean data from CSV files """
-        from app.data_cleaning import clean_activities_updated, clean_organisations, clean_meetings
-        
-        raw_dir = app.config['RAW_CSV_FOLDER'] or os.join(os.path.dirname(os.path.abspath(__file__)),'datasets/raw')
-        dest_dir = app.config['PROCESSED_CSV_FOLDER'] or os.join(os.path.dirname(os.path.abspath(__file__),'datasets/processed'))
-            
-        for cleaner_function in [clean_activities_updated,clean_organisations,clean_meetings]:
-            df, filename = cleaner_function(raw_dir)
-            filepath = os.path.join(dest_dir,filename)
-            df.to_csv(filepath,index=False)
-            print(f'DF saved to {filepath}')
-            
-        print(f'Finished. Processed data can be found at {dest_dir}')
+        """Re-clean data from CSV files"""
+
+        import pandas as pd
+        import os
+        from app.data_cleaning import clean_df
+
+        raw_dir = app.config['RAW_CSV_FOLDER'] or os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'datasets/raw'
+        )
+        dest_dir = app.config['PROCESSED_CSV_FOLDER'] or os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            'datasets/processed'
+        )
+        dataset_files = {
+            'activities': 'Activities.csv',
+            'organisations': 'Organisations.csv',
+            'meetings': 'Meetings.csv',
+        }
+
+        for dataset_type, filename in dataset_files.items():
+            input_path = os.path.join(raw_dir, filename)
+
+            if not os.path.exists(input_path):
+                print(f"Skipping {filename}, not found")
+                continue
+            df = pd.read_csv(input_path, dtype=str)
+            cleaned_df = clean_df(df, dataset_type)
+            output_filename = f"{dataset_type.capitalize()}_processed.csv"
+            filepath = os.path.join(dest_dir, output_filename)
+            cleaned_df.to_csv(filepath, index=False)
+            print(f"DF saved to {filepath}")
+        print(f"Finished. Processed data can be found at {dest_dir}")
     
     return app
 
