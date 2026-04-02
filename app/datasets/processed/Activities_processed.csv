@@ -66,14 +66,14 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-08-21,18.30-20.30,2.0,Recovery Dharma,Recovery Dharma,As needed,Meeting,Targetted,Social Justice,Medium,Nominal,Tangential,Monitored,The Other Place
 2025-08-21,15.00-17.00,2.0,ND Connection,"ND Connection, Mental Health Research",Project,Consultation,Targetted,Social Justice,Medium,Recruitment,Unknown,Monitored,The Other Place
 2025-08-25,16.00-18.00,2.0,Hare Krishna,Hare Krishna Class and Kirtan,Once,Learning,Open,Culture,Medium,Nominal,Tangential,Monitored,The Other Place
-2025-09-02,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,,Tangential,Monitored,Online
+2025-09-02,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,NA,Tangential,Monitored,Online
 2025-09-02,10.00-14.00,4.0,BSWN,SWRERN Core Training Session 1,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-09-02,16.00-19.00,3.0,NSC,Health Creation Lead Induction & Planning Session,Initiative,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-09-03,19.00-20.30,1.5,Weston TUC,Weston TUC against the Far Right,Once,Meeting,Targetted,Racial Justice,Small,Nominal,Tangential,Attended,In Person
 2025-09-03,14.00-14.30,0.5,CSE,FEL Catch up,Project,Meeting,Restricted,Social Justice,Small,Nominal,Meaningful,Attended,Online
 2025-09-04,11.00-12.00,1.0,SWHT,SW Heritage Forum,Project,Meeting,Restricted,Culture,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-09-04,10.00-11.00,1.0,LGBT+Forum,LGBT+ Forum,Once,Meeting,Restricted,Equalities,Small,Meaningful,Tangential,Attended,The Other Place
-2025-09-04,13.00-14.00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
+2025-09-04,13.00-14.00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
 2025-09-04,14.00-16.00,2.0,VANS,NS Senior Leaders Forum,Regular,Meeting,Targetted,Strategic,Large,Nominal,Tangential,Attended,In Person
 2025-09-05,13:00-14:00,1.0,JHF,JHF Youth Charity - Pippa Gribben/ Kate Debley,Once,Meeting,Restricted,Social Justice,Small,Meaningful,Tangential,Attended,In Person
 2025-09-05,12.00-13.00,1.0,RENS,RENS AGM,Regular,Meeting,Targetted,Management,Medium,Meaningful,Meaningful,Attended,The Other Place
@@ -82,26 +82,26 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-09-09,10.00-14.00,4.0,BSWN,SWRERN Core Training Session 2,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-09-09,09.30-10.30,1.0,NSC,Big Conversation Intro,Project,Meeting,Restricted,Social Justice,Small,Nominal,Meaningful,Attended,The Other Place
 2025-09-10,13.00-14.00,1.0,ICB,Community Chest meeting,Project,Meeting,Targetted,Cultural Justice,Medium,Nominal,Tangential,Attended,Online
-2025-09-10,10.30-12.00,1.5,National Centre for Creative Health/MCA,Creative Health Associates: The role of Creative Health connectors,Once,Learning,Open,Culture,Medium,,Tangential,Monitored,Online
+2025-09-10,10.30-12.00,1.5,National Centre for Creative Health/MCA,Creative Health Associates: The role of Creative Health connectors,Once,Learning,Open,Culture,Medium,NA,Tangential,Monitored,Online
 2025-09-10,14.00-16.00,2.0,BSWN,SWREAG,Project,Meeting,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-09-10,18.00-19.30,1.5,NSC,Health Creation Catch up,Regular,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,The Other Place
-2025-09-10,10.30-12.00,1.5,NSC,NST Online,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
-2025-09-10,14.00-15.00,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-09-10,10.30-12.00,1.5,NSC,NST Online,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
+2025-09-10,14.00-15.00,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-09-11,13.00-14.00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,Meaningful,Tangential,Monitored,Online
 2025-09-11,12:00-15:00,3.0,Sirona,Intergrated care @ home - - Claire armour,Once,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,Online
 2025-09-11,12.00-14.00,2.0,ICB,One Weston Locality Partnership,Regular,Meeting,Targetted,Social Justice,Medium,Presentation,Tangential,Attended,Online
-2025-09-11,09.30-11.30,2.0,Plattform,Storytelling to make changes in the system,Single,Learning,Open,Systems Change,Medium,,Meaningful,Monitored,Online
+2025-09-11,09.30-11.30,2.0,Plattform,Storytelling to make changes in the system,Single,Learning,Open,Systems Change,Medium,NA,Meaningful,Monitored,Online
 2025-09-12,17.30-20.00,2.5,FYI,Onam FYI,Once,Event,Targetted,Culture,Large,Nominal,Tangential,Attended,In Person
 2025-09-12,10.00-11.00,1.0,Individual,Back Street Garden Meeting,Project,Meeting,Restricted,Systems Change,Small,Nominal,Meaningful,Attended,The Other Place
 2025-09-15,10.00-11.30,1.5,NSC,Equality Stakeholder Group,Once,Meeting,Targetted,Equalities,Medium,Meaningful,Meaningful,Attended,Online
 2025-09-15,12.30-13.30,1.0,Quartet,Quartet - Sabita,Once,Meeting,Restricted,Management,Small,Meaningful,Tangential,Attended,The Other Place
-2025-09-16,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
+2025-09-16,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
 2025-09-16,10.00-14.00,4.0,BSWN,SWRERN Core Training Session 3,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
-2025-09-16,13.00-15.00,2.0,CC&CH,"SAVE THE DATE: Exploring co-creation with partners and participants: Designing, managing, and evaluating the process",Once,Learning,Open,Systems Change,Medium,,,Monitored,Online
+2025-09-16,13.00-15.00,2.0,CC&CH,"SAVE THE DATE: Exploring co-creation with partners and participants: Designing, managing, and evaluating the process",Once,Learning,Open,Systems Change,Medium,NA,NA,Monitored,Online
 2025-09-16,15.00-16.00,1.0,FAHLC,Mark Graham,Once,Meeting,Restricted,Management,Small,Meaningful,Tangential,Attended,In Person
 2025-09-17,14.00-15.30,1.5,NSC,Trauma Informed Community of Practice,Regular,Meeting,Targetted,Social Justice,Medium,Meaningful,Tangential,Attended,Online
 2025-09-17,16.00-17.00,1.0,Social Roots,Social Roots,Once,Meeting,Restricted,Systems Change,Small,Meaningful,Tangential,Attended,Online
-2025-09-18,13:00-14:00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,,,Attended,Online
+2025-09-18,13:00-14:00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,NA,NA,Attended,Online
 2025-09-18,13.00-16.00,3.0,CANS,Advice First Aid,Once,Learning,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-09-18,11.00-12.00,1.0,Brigstowe,Brigstowe/Common Ambition visit to TOP,Once,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-09-18,16.00-17.00,1.0,NSC,Health Creation Catch up with Becky,Regular,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,The Other Place
@@ -116,14 +116,14 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-09-24,10.00-10.30,0.5,VANS,Check in for VANS webinar,Project,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,Online
 2025-09-24,10:30-12:30,2.0,WESPORT,Building Active Communties,Once,Meeting,Targetted,Social Justice,Medium,Meaningful,Meaningful,Attended,In Person
 2025-09-24,13.00-15.00,2.0,NSC,North Somerset Safeguarding Adults Board Meeting,Regular,Meeting,Targetted,Social Justice,Medium,Nominal,Tangential,Attended,Online
-2025-09-24,15.00-16.30,1.5,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-09-24,15.00-16.30,1.5,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-09-24,14.00-16.00,2.0,NSC,Trauma Transformation Collaborative,Regular,Meeting,Targetted,Social Justice,Medium,Meaningful,Tangential,Attended,Online
 2025-09-24,11.00-15.00,4.0,SWHT,SWHT Photos,Project,Workshop,Open,Culture,Medium,Nominal,Meaningful,Monitored,The Other Place
 2025-09-24,18.00-20.00,2.0,Caafi Health,Black Men's Mental Health,Project,Consultation,Targetted,Racial Justice,Medium,Recruitment,Meaningful,Attended,The Other Place
-2025-09-25,18.00-20.00,2.0,Super Culture,Selfcare & Creative Practice - LHD,Once,Workshop,Targetted,Cultural Justice,Small,Nominal,,Monitored,The Other Place
+2025-09-25,18.00-20.00,2.0,Super Culture,Selfcare & Creative Practice - LHD,Once,Workshop,Targetted,Cultural Justice,Small,Nominal,NA,Monitored,The Other Place
 2025-09-25,14.00-15.00,1.0,VANS,Ageing Well Webinar - Centering Racial Equity in Services for Older Adults in NS,Project,Meeting,Open,Racial Justice,Medium,Presentation,Meaningful,Attended,Online
 2025-09-25,16.00-17.00,1.0,Bristol University,How to Turn the Tide on the Racial Backlash Against EDI (DEI),Once,Learning,Open,Racial Justice,Medium,Nominal,Tangential,Attended,Online
-2025-09-25,13.00-14.00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
+2025-09-25,13.00-14.00,1.0,SARI,SARI Champions Network,Project,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
 2025-09-25,09.00-12.00,2.0,CC&CH,CC&CH Community Meeting,Project,Meeting,Open,Social Justice,Large,Meaningful,Tangential,Attended,In Person
 2025-09-25,18.00-20.00,2.0,Super Culture,Selfcare and Creative Practice,Once,Workshop,Targetted,Cultural Justice,Small,Nominal,Tangential,Monitored,The Other Place
 2025-09-26,10.30-12.00,1.5,ICB,BNSSG Diverse Research Engagement Network,Regular,Meeting,Targetted,Racial Justice,Large,Nominal,Tangential,Attended,Online
@@ -135,7 +135,7 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-09-29,14.00-16.00,2.0,NSC,Mental Health Awareness in Sport and Physical Activity,Once,Meeting,Targetted,Social Justice,Medium,Meaningful,Tangential,Attended,In Person
 2025-09-29,14.00-14.45,1.0,Quay,Quay Research Meeting,Project,Meeting,Restricted,Management,Small,Meaningful,Tangential,Attended,Online
 2025-09-29,12.00-15.00,3.0,SWHT,SWHT Photos,Project,Workshop,Open,Culture,Medium,Nominal,Meaningful,Monitored,The Other Place
-2025-09-30,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
+2025-09-30,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
 2025-09-30,10.00-14.00,2.0,BSWN,SWRERN Core Training Session 5,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-09-30,14.00-17.00,3.0,NSC,JSNA Co-design Workshop,Regular,Meeting,Targetted,Social Justice,Large,Meaningful,Tangential,Attended,In Person
 2025-09-30,12.00-15.00,3.0,SWHT,SWHT Photos,Project,Workshop,Open,Culture,Medium,Nominal,Meaningful,Monitored,The Other Place
@@ -150,7 +150,7 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-10-06,12.30-14.30,1.0,RENS,RENS Leadership Team Meeting,Regular,Meeting,Restricted,Management,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-10-08,16.00-17.00,1.0,WTC,Caroline Reynolds re Sanctuary Group,Once,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-10-08,15.00-16.00,1.0,NHS UoB,Capacity of VCSE organisations to support research,Once,Meeting,Restricted,Social Justice,Small,Meaningful,Meaningful,Attended,Online
-2025-10-08,14.00-15.00,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-10-08,14.00-15.00,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-10-08,18.00-19.00,1.0,VANS,VANS AGM,Regular,Meeting,Targetted,Management,Large,Nominal,Tangential,Attended,In Person
 2025-10-08,18.00-20.00,2.0,RWNS,RWNS Training Meeting,Once,Learning,Targetted,Management,Medium,Nominal,Tangential,Monitored,The Other Place
 2025-10-08,11.00-15.00,4.0,Avon Wildlife Trust,Ebdon Farm Consultation,Project,Consultation,Open,Social Justice,Medium,Nominal,Unknown,Monitored,The Other Place
@@ -161,12 +161,12 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-10-13,15.00-16.00,1.0,Individual,Back Street Garden meeting,Project,Meeting,Restricted,Social Justice,Small,Nominal,Tangential,Attended,The Other Place
 2025-10-13,10.00-11.00,1.0,Quay,Quay Research Meeting,Project,Meeting,Restricted,Management,Small,Meaningful,Tangential,Attended,Online
 2025-10-13,13.30-14.30,1.0,Walliscote School,Walliscote School visit for BHM,Project,Learning,Restricted,Racial Justice,Large,Meaningful,Tangential,Attended,The Other Place
-2025-10-14,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,,Tangential,Monitored,Online
+2025-10-14,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,NA,Tangential,Monitored,Online
 2025-10-14,15.35-16.40,1.0,180DC,180 Degrees Consulting,Project,Meeting,Restricted,Management,Small,Meaningful,Meaningful,Attended,Online
 2025-10-14,14.00-15.30,1.5,Inclusive Companies,Watch Together: Standing Firm in Power and Pride,Once,Watch Together,Open,Racial Justice,Small,Nominal,Tangential,Attended,The Other Place
-2025-10-15,10.00-12.00,2.0,CC&CH,Evaluating Programmes and Creative Engagement Initiatives,Once,Learning,Open,Culture,Medium,,,Monitored,Online
+2025-10-15,10.00-12.00,2.0,CC&CH,Evaluating Programmes and Creative Engagement Initiatives,Once,Learning,Open,Culture,Medium,NA,NA,Monitored,Online
 2025-10-15,14.00-15.00,1.0,REIN,REIN Network BHM,Once,Event,Targetted,Racial Justice,Small,Nominal,Tangential,Attended,In Person
-2025-10-15,09.30-12.30,1.0,Good Practice Mentor Team,An introduction to creating space for Involvement,Once,Learning,Open,Systems Change,Medium,,,Monitored,Online
+2025-10-15,09.30-12.30,1.0,Good Practice Mentor Team,An introduction to creating space for Involvement,Once,Learning,Open,Systems Change,Medium,NA,NA,Monitored,Online
 2025-10-15,16.00-16.30,1.5,CPS,RENS & Community Power Solutions,Project,Meeting,Restricted,Management,Small,Meaningful,Meaningful,Attended,Online
 2025-10-16,11.00-12.00,1.0,Individual,Olawunmi Book Launch,Once,Event,Open,Cultural Justice,Large,Nominal,Tangential,Attended,The Other Place
 2025-10-16,14.00-16.00,2.0,SARI,SARI Champions hate Crime Awareness Week,Once,Meeting,Targetted,Racial Justice,Medium,Nominal,Tangential,Monitored,Online
@@ -177,13 +177,13 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-10-18,19.30-21.30,2.0,Front Room,Long Time Gal,Once,Event,Open,Culture,Large,Nominal,Tangential,Attended,In Person
 2025-10-19,13.30-16.00,2.5,WECA,Citizens Assembly for Culture,Project,Event,Restricted,Cultural Justice,Large,Nominal,Tangential,Attended,In Person
 2025-10-20,16.00-20.00,4.0,FYI,Diwali,Once,Event,Open,Culture,Large,Nominal,Tangential,Attended,In Person
-2025-10-20,14.00-15.00,1.0,NSC,Business Intelligence Network,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-10-20,14.00-15.00,1.0,NSC,Business Intelligence Network,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-10-20,14.00-15.00,1.0,NSC,Mental Health Strategy Group,Regular,Meeting,Targetted,Social Justice,Medium,Meaningful,Tangential,Attended,In Person
 2025-10-20,13.30-14.30,1.0,Walliscote School,Walliscote School visit for BHM,Project,Learning,Open,Racial Justice,Large,Meaningful,Tangential,Attended,The Other Place
 2025-10-21,09.00-10.00,1.0,BSWN,BSWN - Community Development Worker,Once,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,Online
 2025-10-21,10.00-14.00,4.0,BSWN,SWRERN Impact Session 1,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-10-21,10.00-11.30,1.5,BSWN,UnMuseum Working Group Meeting,Project,Meeting,Restricted,Racial Justice,Medium,Meaningful,Tangential,Attended,Online
-2025-10-21,14.00-16.00,2.0,NSC,Climate & Sustainability Partnership,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-10-21,14.00-16.00,2.0,NSC,Climate & Sustainability Partnership,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-10-21,11.00-13.00,2.0,NSC,NS Male Health Group,Regular,Meeting,Targetted,Social Justice,Medium,Meaningful,Tangential,Attended,In Person
 2025-10-21,14.00-16.00,2.0,RENS,RENS Leadership Team Meeting,Regular,Meeting,Restricted,Management,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-10-21,16.00-17.00,1.0,RENS,RENS Trustee Meeting,Regular,Meeting,Restricted,Management,Small,Meaningful,Meaningful,Attended,The Other Place
@@ -200,15 +200,15 @@ Date,TIme,Hours,Organisation,Description,Regularity,Activity Type,Access,Workstr
 2025-10-24,10.30-12.00,1.5,BNSSG,Diverse Research Engagement Network,Regular,Meeting,Targetted,Racial Justice,Large,Meaningful,Meaningful,Attended,Online
 2025-10-24,3 days,48.0,Ella Baker,Ella Baker Weekend,Once,Workshop,Restricted,Racial Justice,Large,Meaningful,Meaningful,Attended,In Person
 2025-10-27,09.00-10.00,1.0,Betterway,Race Equity Co-Learning Lab,Once,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,Online
-2025-10-28,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,,Tangential,Monitored,Online
+2025-10-28,14.30-15.30,1.0,NSC,Multi-Agency meeting - contingency hotel,Regular,Meeting,Targetted,Racial Justice,Medium,NA,Tangential,Monitored,Online
 2025-10-28,15.30-17.00,1.5,RWNS,RWNS/RENS Discussion,Once,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-10-28,10.00-14.00,4.0,BSWN,SWRERN Impact Session 2,Project,Learning,Restricted,Racial Justice,Medium,Meaningful,Meaningful,Attended,Online
 2025-10-29,10.30-11.00,0.5,VANS,David Crossman Research Proposal,Project,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,The Other Place
 2025-10-29,11.00-12.00,1.0,BSWN,Research Proposal Development,Project,Meeting,Restricted,Racial Justice,Small,Meaningful,Meaningful,Attended,Online
-2025-10-29,15.00-16.15,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,,,Monitored,Online
+2025-10-29,15.00-16.15,1.0,NSC,Opportunity North Somerset,Regular,Meeting,Targetted,Social Justice,Medium,NA,NA,Monitored,Online
 2025-10-29,15.00-17.30,2.5,SWHT,SWHT Podcasting,Project,Workshop,Open,Culture,Small,Nominal,Meaningful,Monitored,The Other Place
-2025-10-30,14.00-15.30,1.5,BCC,Bristol Race Equality Practitioners Group,Regular,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
-2025-10-30,10.00-12.00,2.0,NSC,Gypsy & Traveller Meeting,Regular,Meeting,Targetted,Racial Justice,Medium,,,Monitored,Online
+2025-10-30,14.00-15.30,1.5,BCC,Bristol Race Equality Practitioners Group,Regular,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
+2025-10-30,10.00-12.00,2.0,NSC,Gypsy & Traveller Meeting,Regular,Meeting,Targetted,Racial Justice,Medium,NA,NA,Monitored,Online
 2025-10-30,12.00-12.45,1.0,West of England Zero Carbon,GBECF Pre App call Race Equality North Somerset,Project,Meeting,Restricted,Systems Change,Small,Meaningful,Meaningful,Attended,Online
 2025-10-30,11.00-11.30,0.5,CPS,RENS and Community Power Solutions,Project,Meeting,Restricted,Systems Change,Small,Meaningful,Meaningful,Attended,Online
 2025-10-30,12.00-13.00,1.0,Alliance Homes,Alliance BHM visit,Initiative,Meeting,Restricted,Cultural Justice,Medium,Nominal,Meaningful,Attended,The Other Place

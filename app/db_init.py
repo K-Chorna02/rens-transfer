@@ -44,7 +44,6 @@ def populate_db(generator_path_dict:dict,db:SQLAlchemy):
     """
     generator_path_dict should take the form {name: (generator-function,path)}
     """
-    
     for name,(function,source_path) in generator_path_dict.items():
         if not Graph.query.filter_by(name=name).first():
             file_loc = generate_html(source_path,name,function)
@@ -59,8 +58,7 @@ def populate_db(generator_path_dict:dict,db:SQLAlchemy):
 #nuclear - clear graphs from db. FOR TESTING!
 #Like populate_db, requires application context.
 def empty_db(db:SQLAlchemy):
-    
-    db.session.execute(text('TRUNCATE TABLE graph'))
+    db.session.execute(text('TRUNCATE TABLE GRAPH'))
     db.session.commit()
     print(f"Database cleared.")
 

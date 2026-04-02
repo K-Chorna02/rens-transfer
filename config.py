@@ -11,7 +11,7 @@ class Config:
     DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD') or 'AdminTest2025'
     DATABASE_USER = os.environ.get('DATABASE_USER') or 'westonloop_ossian'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        f'mysql+pymysql://{DATABASE_USER}:{DATABASE_PASSWORD}@localhost:3306/westonloop_dashboard'
+    f"sqlite:///{os.path.join(basedir, 'app.db')}"
     SQLALCHEMY_ECHO = 'debug'
     
     SQLALCHEMY_ENGINE_OPTIONS = {
