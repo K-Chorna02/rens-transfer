@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{%block scripts%}
+<style>
+.visibility-badge{
+  padding:6px 14px;
+  border-radius:14px;
+  font-size:0.85rem;
+  font-weight:600;
+  display:inline-flex;
+  align-items:center;
+}
+    .visibility-badge.public {
+    background-color: rgba(49, 183, 188, 0.18);
+    color: var(--brand-teal);
+    }
+
+    .visibility-badge.private {
+    background-color: rgba(2, 10, 10, 0.08);
+    color: rgba(2, 10, 10, 0.65);
+    }
+</style>
+
+
+<script>
+    const toggleUrlTemplate = "{{ url_for('graphs.toggle_graph', graph_id='__GRAPHID__', new_visibility='__VIS__') }}";
+</script>
+<script>
+
+function copyEmbedLink(graphId, url) {
+    const textToCopy = `<iframe
+    title="Embedded Graph ${graphId}"
+    src="${url}"
+    style="border:none; height:300px;"
+    class="box"
+    loading="lazy">
+    </iframe>`;
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            console.log(`Copied link for graph ${graphId} to clipboard`);
+            
+            alert("Embed link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy:", err);
+        });
+}
+
+
+function copyDirectLink(url) {
+    navigator.clipboard.writeText(url)
+        .then(() => {
+            alert("Direct link copied to clipboard!");
+        })
+        .catch(err => {
+            console.error("Failed to copy:", err);
+        });
+}
+
+
+    function updateGraphVisibility(graphId,newVisibility) {
+        const url = toggleUrlTemplate
+    .replace("__GRAPHID__", graphId)
+    .replace("__VIS__", newVisibility);
+        fetch(url, {
+            method:"GET"
+        })
+        .then(response => response.text())
+        .then(data=> {
+            if (data.trim() == "success") {
+                console.log("Visibility updated: ", data);
+                const btn = document.getElementById('make-${newVisibility}-button{{graphId}}');
+                if (btn) {
+                    if (newVisibility==="public") {
+                        btn.textContent = "Make Private";
+                    } else {
+                        btn.textContent = "Make Public";
+                    }
+                }
+                const badge = document.getElementById(`visibility-badge-${graphId}`);
+                if (badge) {
+                badge.textContent = newVisibility === "public" ? "Public" : "Private";
+                badge.classList.remove("public", "private");
+                badge.classList.add(newVisibility);
+                }
+
+                const descriptionPublic = document.getElementById(`public-note${graphId}`)
+                const descriptionPrivate = document.getElementById(`private-note${graphId}`)
+                if (descriptionPublic && descriptionPrivate) {
+                    if (newVisibility==="public") {
+                        console.log('newVisibility is public')
+                        descriptionPublic.style.display='block';
+                        descriptionPrivate.style.display='none';
+                    }
+                    else {
+                        console.log('newVisibility is private')
+                        descriptionPublic.style.display='none';
+                        descriptionPrivate.style.display='block'
+                    }
+                }
+
+            } else {
+                console.error("Server error: ", data);
+            }
+
+        })
+        .catch(error => console.error("Request failed: ",error));
+    }
+</script>
+{%endblock%}
+{% block content %}
+    <main class="wrap">
+        <section class="card" role="main" aria-labelledby="welcome-title">
+            <h1 id="welcome-title">Welcome to your Dashboard</h1>
+
+            <div class="dashboard-container">
+                {% for graph in graph_list %}
+                <div class="main-container">
+                    <iframe
+                        src="{{url_for('graphs.graph_endpoint', graph_id=graph.id)}}"
+                        class="iframe-container">
+                    </iframe>
+                    <div class="toggle-container">
+
+                        <span 
+                        id="visibility-badge-{{graph.id}}" 
+                        class="visibility-badge {{ 'public' if graph.public else 'private' }}">
+                        {{ 'Public' if graph.public else 'Private' }}
+                        </span>
+                        
+                        <p id="public-note{{graph.id}}"
+                        {%if not graph.public%}
+                        style="display:none"{%endif%}>
+                        <button onclick="copyEmbedLink({{graph.id}}, '{{ url_for('graphs.graph_endpoint', graph_id=graph.id, _external=True) }}')">Copy embed code</button>                 
+                        <button onclick="copyDirectLink('{{ url_for('graphs.graph_endpoint', graph_id=graph.id, _external=True) }}')">Copy direct link</button>
+                        <button id="make-private-button{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","private")';>Make private</button></p>                  
+                        <p id="private-note{{graph.id}}"
+                        {%if graph.public%}
+                        style="display:none"{%endif%}
+                        ><button id="makePublicButton{{graph.id}}" onclick='updateGraphVisibility("{{graph.id}}","public")';>Make public</button></p>
+                    
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+           
+        </section>
+    </main>
+{% endblock %}
