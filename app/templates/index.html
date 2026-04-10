@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+    <main class="wrap">
+        <section class="card" role="main" aria-labelledby="welcome-title">
+            <h1 id="welcome-title">Welcome to the RENS homepage</h1>
+            <p>From here you can launch the dashboard.</p>
+            <a class="btn" href="{{ url_for('main.dashboard') }}" role="button">Launch Dashboard</a>
+        
+
+            <p>Below you can see an example of embedding a few graphs in iframes:</p>
+            {% if graph_list %}
+            {% for graph in graph_list %}
+                <iframe
+                    title="{{ graph.name }}"
+                    src="{{ url_for('graphs.graph_endpoint', graph_id=graph.id) }}"
+                    style="border:none; height:300px;"
+                    class="box"
+                    loading="lazy">
+                </iframe>
+            {% endfor %}
+            {% else %}
+                <p>No public graphs are currently available.</p>
+            {% endif %}
+            
+        </section>
+    </main>
+{% endblock %}

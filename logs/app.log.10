@@ -1,0 +1,80 @@
+2026-04-02 14:55:28,499 ERROR: Upload failed [in /home/westonloop/kateryna/app/routes.py:130]
+Traceback (most recent call last):
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlite3.OperationalError: no such table: graph
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/westonloop/kateryna/app/routes.py", line 124, in upload
+    regenerate_graphs(db)
+  File "/home/westonloop/kateryna/app/db_init.py", line 72, in regenerate_graphs
+    graphs = Graph.query.all()
+             ^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2704, in all
+    return self._iter().all()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/query.py", line 2857, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2351, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/session.py", line 2249, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1419, in execute
+    return meth(
+           ^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 2355, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/westonloop/virtualenv/kateryna/3.11/lib64/python3.11/site-packages/sqlalchemy/engine/default.py", line 951, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: graph
+[SQL: SELECT graph.id AS graph_id, graph.name AS graph_name, graph.public AS graph_public, graph.path AS graph_path 
+FROM graph]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-04-02 15:07:26,061 INFO: App startup [in /home/westonloop/kateryna/app/__init__.py:64]
+2026-04-02 15:08:14,405 INFO: App startup [in /home/westonloop/kateryna/app/__init__.py:64]
+2026-04-02 15:08:24,367 INFO: All graph records cleared from DB. [in /home/westonloop/kateryna/app/db_init.py:80]
+2026-04-02 15:08:26,878 INFO: Graphs regenerated successfully. [in /home/westonloop/kateryna/app/db_init.py:85]
+2026-04-02 15:09:27,528 INFO: App startup [in /home/westonloop/kateryna/app/__init__.py:64]
+2026-04-02 15:09:29,469 INFO: App startup [in /home/westonloop/kateryna/app/__init__.py:64]
+2026-04-02 15:10:43,697 INFO: Upload received: Organisations.csv -> organisations [in /home/westonloop/kateryna/app/routes.py:77]
+2026-04-02 15:10:43,697 INFO: Saved raw upload to: /home/westonloop/kateryna/app/datasets/raw/Organisations_raw.csv [in /home/westonloop/kateryna/app/routes.py:103]
+2026-04-02 15:10:43,731 INFO: Saved cleaned CSV to: /home/westonloop/kateryna/app/datasets/processed/Organisations_processed.csv [in /home/westonloop/kateryna/app/routes.py:120]
+2026-04-02 15:10:43,736 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/activities_by_engagement.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,736 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/activities_by_output.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,736 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/activities_by_scale.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,737 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/activities_heatmap_normalized.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,737 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/activities_over_time.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,737 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/engagement_output_heatmap.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,738 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/engagement_output_scale_bubble.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,738 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/organisation_workstream_sankey.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,738 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/scale_engagement_heatmap.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,738 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/org_priority_counts.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,739 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/organisations_ttor_variety_heatmap.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,739 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/priority_ttor_heatmap.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,739 INFO: Deleted HTML file: /home/westonloop/kateryna/app/templates/graphs/ttor_distribution.html [in /home/westonloop/kateryna/app/db_init.py:76]
+2026-04-02 15:10:43,746 INFO: All graph records cleared from DB. [in /home/westonloop/kateryna/app/db_init.py:80]
+2026-04-02 15:10:45,107 INFO: Graphs regenerated successfully. [in /home/westonloop/kateryna/app/db_init.py:85]
+2026-04-02 16:03:14,997 INFO: App startup [in /home/westonloop/kateryna/app/__init__.py:64]
