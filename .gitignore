@@ -1,0 +1,11 @@
+.env
+*.pyc
+*.log
+__pycache__/
+app/__pycache__/
+/uploads/
+passenger_wsgi.py
+tmp/
+app.db
+activities_cleaning.py
+.venv
