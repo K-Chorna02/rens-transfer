@@ -435,7 +435,28 @@ def organisation_workstream_sankey(df, top_n=10):
     )
 
     orgs = links_df["OrganisationGrouped"].unique().tolist()
-    workstreams = links_df["Workstreams"].unique().tolist()
+    workstream_order = [
+        "Racial Justice",
+        "Equalities",
+        "Social Justice",
+        "Social",
+        "Cultural Justice",
+        "Culture",
+        "Systems Change",
+        "Management",
+        "Strategic",
+    ]
+    observed_workstreams = links_df["Workstreams"].unique().tolist()
+    workstreams = [
+        workstream for workstream in workstream_order
+        if workstream in observed_workstreams
+    ]
+    workstreams.extend(
+        sorted(
+            workstream for workstream in observed_workstreams
+            if workstream not in workstreams
+        )
+    )
 
     labels = orgs + workstreams
     label_to_idx = {label: i for i, label in enumerate(labels)}
@@ -447,16 +468,16 @@ def organisation_workstream_sankey(df, top_n=10):
     # Node colors
     org_color = "rgba(120,120,120,0.85)"
     workstream_palette = [
-        "rgba(31,119,180,0.85)",
-        "rgba(255,127,14,0.85)",
-        "rgba(44,160,44,0.85)",
-        "rgba(214,39,40,0.85)",
-        "rgba(148,103,189,0.85)",
-        "rgba(140,86,75,0.85)",
-        "rgba(227,119,194,0.85)",
-        "rgba(127,127,127,0.85)",
-        "rgba(188,189,34,0.85)",
-        "rgba(23,190,207,0.85)",
+        "rgba(0, 92, 169, 0.9)",
+        "rgba(245, 130, 32, 0.9)",
+        "rgba(46, 125, 50, 0.9)",
+        "rgba(220, 53, 69, 0.9)",
+        "rgba(106, 76, 147, 0.9)",
+        "rgba(140, 98, 57, 0.9)",
+        "rgba(214, 51, 132, 0.9)",
+        "rgba(99, 99, 99, 0.9)",
+        "rgba(180, 157, 0, 0.9)",
+        "rgba(0, 137, 123, 0.9)",
     ]
 
     node_colors = []
@@ -471,18 +492,31 @@ def organisation_workstream_sankey(df, top_n=10):
     link_colors = []
     for target_idx in targets:
         rgba = node_colors[target_idx]
-        link_colors.append(rgba.replace("0.85", "0.35"))
+        link_colors.append(rgba.replace("0.9", "0.4").replace("0.85", "0.4"))
+
+    def evenly_spaced_positions(count, start=0.05, end=0.95):
+        if count <= 1:
+            return [0.5]
+        step = (end - start) / (count - 1)
+        return [start + i * step for i in range(count)]
+
+    org_y = evenly_spaced_positions(len(orgs))
+    workstream_y = evenly_spaced_positions(len(workstreams))
+    node_x = ([0.01] * len(orgs)) + ([0.99] * len(workstreams))
+    node_y = org_y + workstream_y
 
     fig = go.Figure(
         data=[
             go.Sankey(
-                arrangement="snap",
+                arrangement="fixed",
                 node=dict(
                     pad=22,
                     thickness=20,
                     line=dict(color="black", width=0.5),
                     label=labels,
                     color=node_colors,
+                    x=node_x,
+                    y=node_y,
                 ),
                 link=dict(
                     source=sources,
