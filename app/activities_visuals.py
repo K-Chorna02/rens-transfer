@@ -21,7 +21,7 @@ def activities_over_time(df):
     # keeps chronological order
     plot_df = plot_df.sort_values("Month")
     # make labels display nicely
-    plot_df["MonthLabel"] = plot_df["Month"].dt.strftime("%b %Y")
+    plot_df["MonthLabel"] = plot_df["Month"].dt.strftime("%b %y")
 
     fig = px.bar(
     plot_df,
@@ -79,7 +79,7 @@ def activities_heatmap_normalized(df):
     # normalize each row to 0-1
     normalized_df = heatmap_df.div(heatmap_df.max(axis=1).replace(0, 1), axis=0)
     # display-friendly month labels
-    month_labels = normalized_df.columns.strftime("%b %Y")
+    month_labels = normalized_df.columns.strftime("%b %y")
     normalized_df.columns = month_labels
     raw_counts.columns = month_labels
     fig = px.imshow(
@@ -334,6 +334,12 @@ def engagement_output_heatmap(df):
 def engagement_output_scale_bubble(df):
     df = df.copy()
     df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+    df["Engagement"] = df["Engagement"].replace({
+        "Presentation": "M", "Meaningful": "M", "Nominal": "N", "Recruitment": "R"
+    })
+    df["Output"] = df["Output"].replace({
+        "Unknown": "U", "Tangential": "T", "Meaningful": "M"
+    })
     plot_df = (
         df.dropna(subset=["Engagement", "Output", "Scale"])
         .groupby(["Engagement", "Output", "Scale"])
@@ -342,6 +348,7 @@ def engagement_output_scale_bubble(df):
     )
 
     scale_order = ["Small", "Medium", "Large"]
+    output_order = ["M", "T", "U"]
 
     fig = px.scatter(
         plot_df,
@@ -350,7 +357,7 @@ def engagement_output_scale_bubble(df):
         size="Activities",
         color="Scale",
         facet_col="Scale",
-        category_orders={"Scale": scale_order},
+        category_orders={"Scale": scale_order, "Output": output_order},
         size_max=45,
         title="Activities by Engagement and Output, Faceted by Scale",
     )
@@ -360,24 +367,46 @@ def engagement_output_scale_bubble(df):
         opacity=0.8,
     )
 
-    fig.update_xaxes(
-        tickangle=45,
-        title_text="Engagement",
-    )
+    fig.update_xaxes(tickangle=0, title_text="", showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
 
-    fig.update_yaxes(
-        title_text="Output",
-    )
+    fig.update_yaxes(title_text="Output", ticklabelstandoff=15, showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
 
     fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
     fig.update_layout(
         showlegend=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        plot_bgcolor="#EEF2F7",
+        paper_bgcolor="#ffffff",
+        margin=dict(l=80, r=40, t=60, b=82),
+    )
+    fig.add_annotation(
+        text="<b>M</b> = Meaningful &nbsp;&nbsp;|&nbsp;&nbsp; <b>N</b> = Nominal &nbsp;&nbsp;|&nbsp;&nbsp; <b>R</b> = Recruitment",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.16,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="<b>U</b> = Unknown &nbsp;&nbsp;|&nbsp;&nbsp; <b>T</b> = Tangential &nbsp;&nbsp;|&nbsp;&nbsp; <b>M</b> = Meaningful",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.24,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="Engagement",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.34,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        align="center",
     )
     fig.layout.yaxis2.title.text = ""
-    
     fig.layout.yaxis3.title.text = ""
-    
+
     return fig
 
 def organisation_workstream_sankey(df, top_n=10):
@@ -482,337 +511,278 @@ def organisation_workstream_sankey(df, top_n=10):
 
     return fig
 
-'''
-def activity_count(df:pd.DataFrame)->go.Figure:
+def access_pie(df):
+    df = df[df["Location"] == "The Other Place"].copy()
+    df["Access"] = df["Access"].replace({"Open": "Public"})
 
-    # Parse dates (mixed formats allowed)
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    # Extract month name
-    df['Month'] = df['Date'].dt.month_name()
-
-    # Count number of activities per month
-    monthly_counts = df['Month'].value_counts().reset_index()
-    monthly_counts.columns = ['Month', 'ActivityCount']
-
-    # Correct month order
-    month_order = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ]
-    monthly_counts['Month'] = pd.Categorical(monthly_counts['Month'], categories=month_order, ordered=True)
-    monthly_counts = monthly_counts.sort_values('Month')
-
-    # Line chart
-    fig = px.line(
-        monthly_counts,
-        x="Month",
-        y="ActivityCount",
-        markers=True,
-        title="Monthly Activity Trend (2025)",
-        
-        template="plotly_white",
-        color_discrete_sequence=["#1f77b4"]
-    )
-
-    fig.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Number of Activities",
-        hovermode="x unified"
-    )
-
-    return fig
-
-
-def workstream_activities(df:pd.DataFrame)->go.Figure:
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    # Group activity counts
-    ws_scale_counts = df.groupby(['Workstreams', 'Scale']).size().reset_index(name='Count')
-
-    # Stacked bar with correct blue palette
-    fig = px.bar(
-        ws_scale_counts,
-        x='Workstreams',
-        y='Count',
-        color='Scale',
-        title='Activities by Workstream and Scale (2025)',
-        barmode='stack',
-        template='plotly_white',
-        
-        color_discrete_sequence=px.colors.sequential.Blues_r  # ✅ FIXED
-    )
-
-    fig.update_layout(
-        xaxis_title="Workstream",
-        yaxis_title="Number of Activities"
-    )
-    return fig
-
-
-def type_output_bar(df:pd.DataFrame)->go.Figure:
-    
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    # ---------------------------------------
-    # 2. Group counts by Activity Type and Output
-    # ---------------------------------------
-    act_out_counts = (
-        df.groupby(['Activity Type', 'Output'])
-        .size()
-        .reset_index(name='Count')
-    )
-
-    # ---------------------------------------
-    # 3. Horizontal Stacked Bar Chart
-    # ---------------------------------------
-    fig = px.bar(
-        act_out_counts,
-        x='Count',
-        y='Activity Type',
-        color='Output',
-        orientation='h',                   # <-- horizontal
-        title='Activity Type vs Output (2025)',
-        barmode='stack',
-        template='plotly_white',
-        color_discrete_sequence=px.colors.sequential.Blues_r  # darker blues
-    )
-
-    fig.update_layout(
-        xaxis_title="Number of Activities",
-        yaxis_title="Activity Type",
-        legend_title="Output"
-    )
-    return fig
-
-
-def engagement_levels(df =pd.DataFrame)->go.Figure:
-    # Parse dates
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    # Group by workstream and engagement
-    ws_eng_counts = (
-        df.groupby(['Workstreams', 'Engagement'])
-        .size()
-        .reset_index(name='Count')
-    )
-
-    # Grouped bar chart
-    fig = px.bar(
-        ws_eng_counts,
-        x='Workstreams',
-        y='Count',
-        color='Engagement',
-        barmode='group',                           # <-- grouped, not stacked
-        title='Workstream vs Engagement Levels (2025)',
-        template='plotly_white',
-        color_discrete_sequence=px.colors.sequential.Blues_r  # clean dark blues
-    )
-
-    fig.update_layout(
-        xaxis_title="Workstream",
-        yaxis_title="Number of Activities",
-        legend_title="Engagement Level"
-    )
-
-    return fig
-
-
-def access_pie(df = pd.DataFrame)->go.Figure:
-
-    # Count Access values
     access_counts = df['Access'].value_counts().reset_index()
     access_counts.columns = ['Access', 'Count']
 
-    # Pie chart
     fig_access = px.pie(
         access_counts,
         names='Access',
         values='Count',
-        title='Access Proportion Across All Activities',
-        color_discrete_sequence=px.colors.sequential.Blues_r,   # dark blues
-        hole=0.0                                                 # full pie
+        title='Access Proportion: The Other Place Activities',
+        color_discrete_sequence=px.colors.sequential.Blues_r,
+        hole=0.0
     )
 
     fig_access.update_layout(
-        template='plotly_white',
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#ffffff",
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
     )
 
     return fig_access
 
 
-def activity_heatmap(df = pd.DataFrame)->go.Figure:
-    ws_counts = df['Workstreams'].value_counts().reset_index()
-    ws_counts.columns = ['Workstream', 'Count']
-    
-    # Number of workstreams
-    n = len(ws_counts)
-    
-    # Determine grid size (square or rectangle close to square)
-    grid_size = int(np.ceil(np.sqrt(n)))
-    
-    # Pad data to fill the grid
-    padded_counts = ws_counts['Count'].tolist() + [0] * (grid_size**2 - n)
-    padded_labels = ws_counts['Workstream'].tolist() + [""] * (grid_size**2 - n)
-    
-    # Convert to a matrix
-    count_matrix = np.array(padded_counts).reshape(grid_size, grid_size)
-    label_matrix = np.array(padded_labels).reshape(grid_size, grid_size)
-    
-    # Square heatmap
-    fig = px.imshow(
-        count_matrix,
-        color_continuous_scale=px.colors.sequential.Blues_r,
-        aspect='equal',  # ensures squares
-        text_auto=False  # no numbers on tiles
+def meetings_engagement_output_bubble(df):
+    df = df[df["Activity Type"] == "Meeting"].copy()
+    df["Engagement"] = df["Engagement"].replace({
+        "Presentation": "M", "Meaningful": "M", "Nominal": "N", "Recruitment": "R"
+    })
+    df["Output"] = df["Output"].replace({
+        "Unknown": "U", "Tangential": "T", "Meaningful": "M"
+    })
+    plot_df = (
+        df.dropna(subset=["Engagement", "Output", "Scale"])
+        .groupby(["Engagement", "Output", "Scale"])
+        .size()
+        .reset_index(name="Activities")
     )
-    
-    # Hover tooltips with the correct Workstream name
-    fig.update_traces(
-        hovertemplate="Workstream: %{customdata}<br>Count: %{z}<extra></extra>",
-        customdata=label_matrix
+    scale_order = ["Small", "Medium", "Large"]
+    output_order = ["M", "T", "U"]
+    fig = px.scatter(
+        plot_df, x="Engagement", y="Output", size="Activities",
+        color="Scale", facet_col="Scale",
+        category_orders={"Scale": scale_order, "Output": output_order},
+        size_max=45,
+        title="Meetings: Engagement vs Output by Scale",
     )
+    fig.update_traces(marker=dict(line=dict(width=1, color="black")), opacity=0.8)
+    fig.update_xaxes(tickangle=0, title_text="", showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.update_yaxes(title_text="Output", ticklabelstandoff=15, showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
     fig.update_layout(
-        title="Workstream Activity Heatmap (Square Tiles)",
-        template="plotly_white",
-        xaxis_visible=False,
-        yaxis_visible=False
+        showlegend=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        plot_bgcolor="#EEF2F7",
+        paper_bgcolor="#ffffff",
+        margin=dict(l=80, r=40, t=60, b=82),
     )
-    
-    return fig
-    
-    
-    
-def activity_trend_ex_meetings(df:pd.DataFrame)->go.Figure:
-    
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-   
-    df['Activity Type'] = df['Activity Type'].astype(str).str.strip().str.lower()
-    df_filtered = df[df['Activity Type'] != 'meeting'].copy()
-    
-    # ---------------------------------------
-    # 4. Extract Month
-    # ---------------------------------------
-    df_filtered['Month'] = df_filtered['Date'].dt.month_name()
-    
-    # Keep Jan to Oct only
-    month_order = [
-        "January", "February", "March", "April", "May",
-        "June", "July", "August", "September", "October"
-    ]
-    df_filtered = df_filtered[df_filtered['Month'].isin(month_order)]
-    
-    # ---------------------------------------
-    # 5. Count activities per month
-    # ---------------------------------------
-    monthly_counts = (
-        df_filtered.groupby("Month")
-                   .size()
-                   .reindex(month_order)      # ensures correct order
-                   .reset_index(name="Count")
+    fig.add_annotation(
+        text="<b>M</b> = Meaningful &nbsp;&nbsp;|&nbsp;&nbsp; <b>N</b> = Nominal &nbsp;&nbsp;|&nbsp;&nbsp; <b>R</b> = Recruitment",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.16,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
     )
-    
-    fig = px.line(
-        monthly_counts,
-        x='Month',
-        y='Count',
-        markers=True,
-        title='Activity Trend (Jan–Oct) — Excluding Meetings',
-        template='plotly_white',
-        color_discrete_sequence=["#1f77b4"],  # Blue line
+    fig.add_annotation(
+        text="<b>U</b> = Unknown &nbsp;&nbsp;|&nbsp;&nbsp; <b>T</b> = Tangential &nbsp;&nbsp;|&nbsp;&nbsp; <b>M</b> = Meaningful",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.24,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
     )
-    
-    fig.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Number of Activities",
-        hovermode="x unified"
+    fig.add_annotation(
+        text="Engagement",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.34,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        align="center",
     )
-    
-    return fig
-    
-    
-    
-def meetings_monthly(df):
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    df['Activity Type'] = df['Activity Type'].astype(str).str.strip().str.lower()
-    
-    df_meetings = df[df['Activity Type'] == 'meeting'].copy()
-    
-    # ---------------------------------------
-    # 4. Extract Month
-    # ---------------------------------------
-    df_meetings['Month'] = df_meetings['Date'].dt.month_name()
-    
-    # Filter only Sept–Oct
-    target_months = ["September", "October"]
-    df_meetings = df_meetings[df_meetings['Month'].isin(target_months)]
-    
-    # ---------------------------------------
-    # 5. Count meetings per month
-    # ---------------------------------------
-    monthly_counts = (
-        df_meetings.groupby('Month')
-                   .size()
-                   .reindex(target_months)
-                   .reset_index(name='Count')
-    )
-    
-    fig = px.line(
-        monthly_counts,
-        x='Month',
-        y='Count',
-        markers=True,
-        title='Meetings Trend (September–October)',
-        template='plotly_white',
-        color_discrete_sequence=["#004c99"],  # deep blue
-    )
-    
-    fig.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Number of Meetings",
-        hovermode="x unified"
-    )
-    return fig
-    
-    
-def activity_monthly_trend(df):
-    df['Date'] = pd.to_datetime(df['Date'], errors='coerce')
-
-    df['Month'] = df['Date'].dt.month_name()
-    
-    # Keep only September + October
-    target_months = ["September", "October"]
-    df_sep_oct = df[df['Month'].isin(target_months)].copy()
-    
-    # ---------------------------------------
-    # 4. Count activities per month
-    # ---------------------------------------
-    monthly_counts = (
-        df_sep_oct.groupby("Month")
-                  .size()
-                  .reindex(target_months)     # ensure correct order
-                  .reset_index(name="Count")
-    )
-    
-    fig = px.line(
-        monthly_counts,
-        x='Month',
-        y='Count',
-        markers=True,
-        title='Activity Trend (September–October)',
-        template='plotly_white',
-        color_discrete_sequence=["#1f77b4"],  # blue line
-    )
-    
-    fig.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Number of Activities",
-        hovermode="x unified"
-    )
+    fig.layout.yaxis2.title.text = ""
+    fig.layout.yaxis3.title.text = ""
     return fig
 
 
+def events_engagement_output_bubble(df):
+    df = df[df["Activity Type"] == "Event"].copy()
+    df["Engagement"] = df["Engagement"].replace({
+        "Presentation": "M", "Meaningful": "M", "Nominal": "N", "Recruitment": "R"
+    })
+    df["Output"] = df["Output"].replace({
+        "Unknown": "U", "Tangential": "T", "Meaningful": "M"
+    })
+    plot_df = (
+        df.dropna(subset=["Engagement", "Output", "Scale"])
+        .groupby(["Engagement", "Output", "Scale"])
+        .size()
+        .reset_index(name="Activities")
+    )
+    scale_order = ["Small", "Medium", "Large"]
+    output_order = ["M", "T", "U"]
+    fig = px.scatter(
+        plot_df, x="Engagement", y="Output", size="Activities",
+        color="Scale", facet_col="Scale",
+        category_orders={"Scale": scale_order, "Output": output_order},
+        size_max=45,
+        title="Events: Engagement vs Output by Scale",
+    )
+    fig.update_traces(marker=dict(line=dict(width=1, color="black")), opacity=0.8)
+    fig.update_xaxes(tickangle=0, title_text="", showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.update_yaxes(title_text="Output", ticklabelstandoff=15, showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_layout(
+        showlegend=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        plot_bgcolor="#EEF2F7",
+        paper_bgcolor="#ffffff",
+        margin=dict(l=80, r=40, t=60, b=82),
+    )
+    fig.add_annotation(
+        text="<b>M</b> = Meaningful &nbsp;&nbsp;|&nbsp;&nbsp; <b>N</b> = Nominal &nbsp;&nbsp;|&nbsp;&nbsp; <b>R</b> = Recruitment",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.16,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="<b>U</b> = Unknown &nbsp;&nbsp;|&nbsp;&nbsp; <b>T</b> = Tangential &nbsp;&nbsp;|&nbsp;&nbsp; <b>M</b> = Meaningful",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.24,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="Engagement",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.34,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        align="center",
+    )
+    fig.layout.yaxis2.title.text = ""
+    fig.layout.yaxis3.title.text = ""
+    return fig
 
-'''
+
+def learning_engagement_output_bubble(df):
+    df = df[df["Activity Type"] == "Learning"].copy()
+    df["Engagement"] = df["Engagement"].replace({
+        "Presentation": "M", "Meaningful": "M", "Nominal": "N", "Recruitment": "R"
+    })
+    df["Output"] = df["Output"].replace({
+        "Unknown": "U", "Tangential": "T", "Meaningful": "M"
+    })
+    plot_df = (
+        df.dropna(subset=["Engagement", "Output", "Scale"])
+        .groupby(["Engagement", "Output", "Scale"])
+        .size()
+        .reset_index(name="Activities")
+    )
+    scale_order = ["Small", "Medium", "Large"]
+    output_order = ["M", "T", "U"]
+    fig = px.scatter(
+        plot_df, x="Engagement", y="Output", size="Activities",
+        color="Scale", facet_col="Scale",
+        category_orders={"Scale": scale_order, "Output": output_order},
+        size_max=45,
+        title="Learning: Engagement vs Output by Scale",
+    )
+    fig.update_traces(marker=dict(line=dict(width=1, color="black")), opacity=0.8)
+    fig.update_xaxes(tickangle=0, title_text="", showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.update_yaxes(title_text="Output", ticklabelstandoff=15, showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_layout(
+        showlegend=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        plot_bgcolor="#EEF2F7",
+        paper_bgcolor="#ffffff",
+        margin=dict(l=80, r=40, t=60, b=82),
+    )
+    fig.add_annotation(
+        text="<b>M</b> = Meaningful &nbsp;&nbsp;|&nbsp;&nbsp; <b>N</b> = Nominal &nbsp;&nbsp;|&nbsp;&nbsp; <b>R</b> = Recruitment",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.16,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="<b>U</b> = Unknown &nbsp;&nbsp;|&nbsp;&nbsp; <b>T</b> = Tangential &nbsp;&nbsp;|&nbsp;&nbsp; <b>M</b> = Meaningful",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.24,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="Engagement",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.34,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        align="center",
+    )
+    fig.layout.yaxis2.title.text = ""
+    fig.layout.yaxis3.title.text = ""
+    return fig
+
+
+def workshops_engagement_output_bubble(df):
+    df = df[df["Activity Type"] == "Workshop"].copy()
+    df["Engagement"] = df["Engagement"].replace({
+        "Presentation": "M", "Meaningful": "M", "Nominal": "N", "Recruitment": "R"
+    })
+    df["Output"] = df["Output"].replace({
+        "Unknown": "U", "Tangential": "T", "Meaningful": "M"
+    })
+    plot_df = (
+        df.dropna(subset=["Engagement", "Output", "Scale"])
+        .groupby(["Engagement", "Output", "Scale"])
+        .size()
+        .reset_index(name="Activities")
+    )
+    scale_order = ["Small", "Medium", "Large"]
+    output_order = ["M", "T", "U"]
+    fig = px.scatter(
+        plot_df, x="Engagement", y="Output", size="Activities",
+        color="Scale", facet_col="Scale",
+        category_orders={"Scale": scale_order, "Output": output_order},
+        size_max=45,
+        title="Workshops: Engagement vs Output by Scale",
+    )
+    fig.update_traces(marker=dict(line=dict(width=1, color="black")), opacity=0.8)
+    fig.update_xaxes(tickangle=0, title_text="", showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.update_yaxes(title_text="Output", ticklabelstandoff=15, showline=True, linecolor="#AABBCC", mirror=True, linewidth=1.5)
+    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
+    fig.update_layout(
+        showlegend=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        plot_bgcolor="#EEF2F7",
+        paper_bgcolor="#ffffff",
+        margin=dict(l=80, r=40, t=60, b=82),
+    )
+    fig.add_annotation(
+        text="<b>M</b> = Meaningful &nbsp;&nbsp;|&nbsp;&nbsp; <b>N</b> = Nominal &nbsp;&nbsp;|&nbsp;&nbsp; <b>R</b> = Recruitment",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.16,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="<b>U</b> = Unknown &nbsp;&nbsp;|&nbsp;&nbsp; <b>T</b> = Tangential &nbsp;&nbsp;|&nbsp;&nbsp; <b>M</b> = Meaningful",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.24,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=11, color="#020A0A"),
+        align="center",
+    )
+    fig.add_annotation(
+        text="Engagement",
+        xref="paper", yref="paper",
+        x=0.5, y=-0.34,
+        showarrow=False,
+        font=dict(family="Arial, sans-serif", size=12, color="#020A0A"),
+        align="center",
+    )
+    fig.layout.yaxis2.title.text = ""
+    fig.layout.yaxis3.title.text = ""
+    return fig
