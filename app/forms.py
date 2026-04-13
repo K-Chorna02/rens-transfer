@@ -19,7 +19,6 @@ class UploadForm(FlaskForm):
     choices=[
     ('activities', 'Activities'),
     ('organisations', 'Organisations'),
-    ('meetings', 'Meetings'),
 ]
     )
     submit = SubmitField('Upload')
