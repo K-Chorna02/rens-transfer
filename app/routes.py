@@ -1,4 +1,3 @@
-
 from flask import render_template, Blueprint, url_for, redirect, flash, current_app, abort
 from app.forms import LoginForm, UploadForm
 from app.models import Graph
@@ -16,49 +15,41 @@ from app.data_cleaning import clean_df
 main_bp = Blueprint('main', __name__)
 
 
+@main_bp.route('/')
+def index():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
+    return redirect(url_for('main.login'))
+
+
+@main_bp.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('main.dashboard'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = current_app.config['ADMIN_USER']
+        if form.username.data == user.username and check_password_hash(user.password_hash, form.password.data):
+            login_user(user)
+            return redirect(url_for('main.dashboard'))
+        flash('Invalid username or password', 'error')
+    return render_template('login.html', form=form)
+
+
+@main_bp.route('/logout')
+def logout():
+    logout_user()
+    flash("Successfully logged out.", category='info')
+    current_app.logger.info("Logged out admin")
+    return redirect(url_for('main.index'))
+
+
 @main_bp.route('/dashboard')
 @login_required
 def dashboard():
     graph_list = [g for g in Graph.query.all()]
+    return render_template('dashboard.html', graph_list=graph_list)
 
-    return render_template('dashboard.html',graph_list = graph_list)
-
-
-"""
-@main_bp.route('/dashboard/<graph_id>')
-def graph_endpoint(graph_id):
-    
-    g = Graph.query.get_or_404(int(graph_id))
-
-    
-    
-    if not current_user.is_authenticated:
-        if not g.public:
-            abort(403)
-    #graph_json = json.dumps(g.data)
-    
-    name = g.name
-    try:
-        return render_template(f'{name}.html')
-    except TemplateNotFound:
-        abort(404)"""
-
-@main_bp.route('/graph_tester')
-def graph_tester():
-    return render_template('Line.html')
-
-
-
-def read_uploaded_file(uploaded_file):
-    filename = uploaded_file.filename.lower()
-
-    if filename.endswith('.csv'):
-        return pd.read_csv(uploaded_file, dtype=str, engine='python', on_bad_lines='warn')
-
-    if filename.endswith('.xlsx'):
-        return pd.read_excel(uploaded_file, dtype=str)
-
-    raise ValueError('Unsupported file type')
 
 @main_bp.route('/upload', methods=['GET', 'POST'])
 @login_required
@@ -128,12 +119,11 @@ def upload():
 
     return render_template('upload.html', form=form)
 
-@main_bp.route('/logout')
-def logout():
-    logout_user()
-    flash("Successfully logged out.", category='info')
-    current_app.logger.info("Logged out admin")
-    return redirect(url_for('main.index'))
+
+@main_bp.route('/graph_tester')
+def graph_tester():
+    return render_template('Line.html')
+
 
 @main_bp.route('/internal-error')
 def internal_error():
